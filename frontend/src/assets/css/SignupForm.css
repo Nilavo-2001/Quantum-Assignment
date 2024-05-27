@@ -1,0 +1,22 @@
+/* SignupForm.css */
+.sign-up-form {
+  background: linear-gradient(to right, #74ebd5, #acb6e5);
+}
+.signup-container {
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.signup-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
+
+.signup-card .form-label {
+  font-weight: bold;
+}

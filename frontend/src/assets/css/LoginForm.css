@@ -1,0 +1,33 @@
+/* LoginForm.css */
+
+.login-form {
+  background: linear-gradient(to right, #74ebd5, #acb6e5);
+}
+
+.login-container {
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
+
+.login-card .form-label {
+  font-weight: bold;
+}
+
+.login-card .signup-link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.login-card .signup-link:hover {
+  text-decoration: underline;
+}
