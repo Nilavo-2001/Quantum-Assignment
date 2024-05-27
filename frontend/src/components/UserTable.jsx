@@ -41,6 +41,11 @@ const UserTable = () => {
     }
   };
 
+  const formatDate = (dateString) => {
+    const [year, month, day] = dateString.split("T")[0].split("-");
+    return `${day}/${month}/${year}`;
+  };
+
   const logout = async () => {
     localStorage.removeItem("userInfo");
     setUserInfo(null);
@@ -78,7 +83,7 @@ const UserTable = () => {
               <tr key={index}>
                 <td>{index + 1}</td>
                 <td>{user.name}</td>
-                <td>{user.dob}</td>
+                <td>{formatDate(user.dob)}</td>
                 <td>{user.email}</td>
                 <td>{roles[Math.floor(Math.random() * 4)]}</td>
               </tr>

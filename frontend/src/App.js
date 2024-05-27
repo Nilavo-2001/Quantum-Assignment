@@ -1,10 +1,10 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
 import "react-toastify/dist/ReactToastify.css";
 import SignupForm from './components/Signup';
 import UserTable from './components/UserTable';
 import LoginForm from './components/Login';
 import { Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import './App.css'
 import { useContext } from 'react';
 import { userContext } from './context/UserProvider';
 

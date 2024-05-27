@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Form, Button, Container, Card } from "react-bootstrap";
+import { Form, Button, Container, Card, Spinner } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/css/LoginForm.css";
 import { useNavigate } from "react-router-dom";
@@ -10,12 +10,13 @@ import { userContext } from "../context/UserProvider";
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { setUserInfo } = useContext(userContext);
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log("Called");
+    // console.log("Called");
     if (!email || !password) {
       warning("Please fill all the fields");
       return;
@@ -35,10 +36,11 @@ const LoginForm = () => {
       },
       data: data,
     };
+    setLoading(true);
     try {
       const response = await axios.request(config);
-
       if (response.status == 200) {
+        setLoading(false);
         const { data } = response.data;
         console.log(data);
         localStorage.setItem("userInfo", JSON.stringify(data));
@@ -46,6 +48,7 @@ const LoginForm = () => {
         navigate("/");
       }
     } catch (err) {
+      setLoading(false);
       const { response } = err;
       if (response && response.data && response.data.message)
         error(response.data.message);
@@ -91,7 +94,7 @@ const LoginForm = () => {
               </Form.Group>
 
               <Button variant="primary" type="submit" className="w-100">
-                Login
+                {loading ? <Spinner variant="light" size="sm" /> : "Login"}
               </Button>
 
               <div className="text-center mt-3">

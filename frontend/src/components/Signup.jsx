@@ -1,5 +1,13 @@
 import React, { useContext, useState } from "react";
-import { Form, Button, Container, Row, Col, Card } from "react-bootstrap";
+import {
+  Form,
+  Button,
+  Container,
+  Row,
+  Col,
+  Card,
+  Spinner,
+} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/css/SignupForm.css";
 import axios from "axios";
@@ -13,6 +21,7 @@ const SignupForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmpassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const { setUserInfo } = useContext(userContext);
   const navigate = useNavigate();
 
@@ -46,9 +55,10 @@ const SignupForm = () => {
       },
       data: data,
     };
+    setLoading(true);
     try {
       const response = await axios.request(config);
-
+      setLoading(false);
       if (response.status == 200) {
         const { data } = response.data;
         localStorage.setItem("userInfo", JSON.stringify(data));
@@ -56,6 +66,7 @@ const SignupForm = () => {
         navigate("/");
       }
     } catch (err) {
+      setLoading(false);
       const { response } = err;
       if (response && response.data && response.data.message)
         error(response.data.message);
@@ -132,7 +143,7 @@ const SignupForm = () => {
               </Form.Group>
 
               <Button variant="primary" type="submit" className="w-100">
-                Sign Up
+                {loading ? <Spinner variant="light" size="sm" /> : "Sign Up"}
               </Button>
             </Form>
           </Card.Body>
