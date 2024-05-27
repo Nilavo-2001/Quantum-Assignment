@@ -1,50 +1,66 @@
-import React from "react";
-import { Table, Container } from "react-bootstrap";
+import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import { Table, Container, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/css/UserTable.css";
+import { userContext } from "../context/UserProvider";
+import { error } from "../utils/toasts";
+import { useNavigate } from "react-router-dom";
 
-const users = [
-  {
-    id: 1,
-    name: "Michael Holz",
-    dob: "04/10/2013",
-    email: "michael@example.com",
-    role: "Admin",
-  },
-  {
-    id: 2,
-    name: "Paula Wilson",
-    dob: "05/08/2014",
-    email: "paula@example.com",
-    role: "Publisher",
-  },
-  {
-    id: 3,
-    name: "Antonio Moreno",
-    dob: "11/05/2015",
-    email: "antonio@example.com",
-    role: "Publisher",
-  },
-  {
-    id: 4,
-    name: "Mary Saveley",
-    dob: "06/09/2016",
-    email: "mary@example.com",
-    role: "Reviewer",
-  },
-  {
-    id: 5,
-    name: "Martin Sommer",
-    dob: "12/08/2017",
-    email: "martin@example.com",
-    role: "Moderator",
-  },
-  // Add more users as needed
-];
+const roles = ["Admin", "Publisher", "Reviewer", "Moderator"];
 
 const UserTable = () => {
+  const [users, setUsers] = useState([]);
+
+  const { userInfo, setUserInfo } = useContext(userContext);
+
+  const navigate = useNavigate();
+
+  const fetchUser = async () => {
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: "http://localhost:8000/api/info",
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    try {
+      const response = await axios.request(config);
+
+      if (response.status == 200) {
+        const { data } = response.data;
+        setUsers(data.users);
+      }
+    } catch (err) {
+      const { response } = err;
+      if (response && response.data && response.data.message)
+        error(response.data.message);
+      else console.error(err.message);
+    }
+  };
+
+  const logout = async () => {
+    localStorage.removeItem("userInfo");
+    setUserInfo(null);
+    navigate("/login");
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
   return (
     <div className="page-container">
+      <Button
+        variant="secondary"
+        type="submit"
+        className="logout-button"
+        onClick={logout}
+      >
+        Logout
+      </Button>
       <Container className="table-container">
         <h2>User Table</h2>
         <Table className="table">
@@ -58,13 +74,13 @@ const UserTable = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
+            {users.map((user, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
                 <td>{user.name}</td>
                 <td>{user.dob}</td>
                 <td>{user.email}</td>
-                <td>{user.role}</td>
+                <td>{roles[Math.floor(Math.random() * 4)]}</td>
               </tr>
             ))}
           </tbody>

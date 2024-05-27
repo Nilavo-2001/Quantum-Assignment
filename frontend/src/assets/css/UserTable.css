@@ -54,3 +54,9 @@ html {
 .table tbody tr td {
   padding: 10px;
 }
+
+.logout-button {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+}
